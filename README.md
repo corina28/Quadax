@@ -26,6 +26,9 @@ namespace Mastermind
 
             string s1 = string.Join("", l1.ToArray());
             string s2 = string.Join("", l2.ToArray());
+            List<int> index = new List<int>();
+            
+
 
             Console.WriteLine("Here is your input: " + s1);
             Console.WriteLine("Here is the random number: " + s2);
@@ -42,19 +45,24 @@ namespace Mastermind
                 int l = 0;
                 for (int i = 0; i < 4; i++)
                 {
-                   
-                    for (int j=l; j < 4; j++)
+                    if (!l1.Contains(l2[i]))
+                        continue;
+                    for (int j=0; j < 4; j++)
                     {
+                        if (index.Contains(j))
+                            continue;
                         if ((l1[i] == l2[j]) && (i == j))
                         {
                             Console.WriteLine("+ " + l1[i]);
-                            l = i+1;
+                            index.Add(j);
+                            //l = i;
                             break;
                         }
                         else if ((l1[i] == l2[j]) && (i != j))
                         {
+                            index.Add(j);
                             Console.WriteLine("- " + l1[i]);
-                            l = i;
+                            //l = i;
                             break;
                         }
 
