@@ -36,21 +36,33 @@ namespace Mastermind
                 Console.WriteLine("YOU GOT IT");
                 return 0;
             }
+            
             else
             {
-               for ( int i=0; i<4; i++)
+                int l = 0;
+                for (int i = 0; i < 4; i++)
                 {
-                    if (!l2.Contains(l1[i]))
-                    continue;
-                    else
+                   
+                    for (int j=l; j < 4; j++)
                     {
-                        int l = l2.IndexOf(l1[i], i);
-                        if (l == i)
+                        if ((l1[i] == l2[j]) && (i == j))
+                        {
                             Console.WriteLine("+ " + l1[i]);
-                        else
+                            l = i+1;
+                            break;
+                        }
+                        else if ((l1[i] == l2[j]) && (i != j))
+                        {
                             Console.WriteLine("- " + l1[i]);
+                            l = i;
+                            break;
+                        }
+
                     }
                 }
+
+                    
+                
                
                     
             }
