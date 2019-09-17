@@ -9,80 +9,79 @@ namespace Mastermind
 {
     class RandomNumber
     {
-        public List<int> GenerateRandom()
+        public Dictionary<int,int> GenerateRandom()
         {
             Random random = new Random();
-            List<int> randNumber = new List<int>();
+            Dictionary<int, int> randNumber = new Dictionary<int, int>();
+            
 
             for (int i = 0; i < 4; i++)
             {
-                randNumber.Add(random.Next(1, 6));
+                randNumber.Add(i,random.Next(1, 6));
             }
             return randNumber;
         }
 
-        public int Compare(List<int> l1, List<int> l2)
+        public int Compare(Dictionary<int, int> l1, Dictionary<int, int> l2)
         {
 
-            string s1 = string.Join("", l1.ToArray());
-            string s2 = string.Join("", l2.ToArray());
-            List<int> index = new List<int>();
-            
+            string s1 = string.Join("", l1.Values.ToArray());
+            string s2 = string.Join("", l2.Values.ToArray());
+            List<int> temp = new List<int>();
+
+            Dictionary<int, int> d = new Dictionary<int, int>();
+            Dictionary<int, int> d1 = new Dictionary<int, int>();
+            Dictionary<int, int> temp1 = new Dictionary<int, int>();
+
+
 
 
             Console.WriteLine("Here is your input: " + s1);
             Console.WriteLine("Here is the random number: " + s2);
 
-            //s2 = l2.ToString();
             if (String.Compare(s1, s2) == 0)
             {
                 Console.WriteLine("YOU GOT IT");
                 return 0;
             }
-            
-            else
+
+            IEnumerable<KeyValuePair<int, int>> x = l1.Except(l2);
+
+            foreach (KeyValuePair<int, int> v in x)
             {
-                int l = 0;
-                for (int i = 0; i < 4; i++)
-                {
-                    if (!l1.Contains(l2[i]))
-                        continue;
-                    for (int j=0; j < 4; j++)
-                    {
-                        if (index.Contains(j))
-                            continue;
-                        if ((l1[i] == l2[j]) && (i == j))
-                        {
-                            Console.WriteLine("+ " + l1[i]);
-                            index.Add(j);
-                            //l = i;
-                            break;
-                        }
-                        else if ((l1[i] == l2[j]) && (i != j))
-                        {
-                            index.Add(j);
-                            Console.WriteLine("- " + l1[i]);
-                            //l = i;
-                            break;
-                        }
-
-                    }
-                }
-
-                    
-                
-               
-                    
+                if (!l2.ContainsValue(v.Value))
+                    continue;
+                Console.WriteLine("- " + v.Value.ToString());
+                temp1.Add(v.Key,v.Value);
             }
+
+                
+
+            x = l1.Except(temp1);
+
+            foreach (KeyValuePair<int, int> v in x)
+            {
+                if (!l2.ContainsValue(v.Value))
+                    continue;
+                Console.WriteLine("+ " + v.Value.ToString());
+                //temp1.Add(v.Key, v.Value);
+            }
+
+
+
+
+
+
+
             return 1;
 
             
         }
 
-        public Boolean ValidateParams(string input, out List<int> list)
+        public Boolean ValidateParams(string input, out Dictionary<int,int> list)
         {
             int result = 0;
-            list  = new List<int>();
+            list  = new Dictionary<int, int>();
             String inputStr = String.Empty;
 
             try
@@ -106,7 +105,7 @@ namespace Mastermind
                         throw new Exception("Each digit needs to be between 1 and 6");
                     }
                     else
-                        list.Add(temp);
+                        list.Add(i,temp);
                 }
 
                 if (list.Count == 4)
@@ -132,8 +131,8 @@ namespace Mastermind
         static void Main(string[] args)
         {
             string inputStr = String.Empty;
-            List<int> input = new List<int>();
-            List<int> randNbr = new List<int>();
+            Dictionary<int, int> input = new Dictionary<int, int>();
+            Dictionary<int, int> randNbr = new Dictionary<int, int>();
             RandomNumber myNumber = new RandomNumber();
             Boolean check = false;
 
